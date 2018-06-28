@@ -1,3 +1,4 @@
+[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 # Introduction
 EasyMockServer is a mock server for json and mock template files.It can map you json/mockJs file to RESTful url easily.
 # Install
