@@ -1,0 +1,36 @@
+{
+  "name": "easy-mock-server",
+  "version": "1.0.0",
+  "description": "A mock server for json and mock template files",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "babel src -d dist -w"
+  },
+  "bin": {
+    "easyMockServer": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geminate/easy-mock-server.git"
+  },
+  "keywords": [
+    "mock",
+    "server"
+  ],
+  "author": "geminate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geminate/easy-mock-server/issues"
+  },
+  "homepage": "https://github.com/geminate/easy-mock-server#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1"
+  },
+  "dependencies": {
+    "commander": "^2.15.1",
+    "mockjs": "^1.0.1-beta3",
+    "optimist": "^0.6.1"
+  }
+}
