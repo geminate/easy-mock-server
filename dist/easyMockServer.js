@@ -32,6 +32,7 @@ var EasyMockServer = function () {
 
         this.basePath = configs.basePath;
         this.port = configs.port;
+        this.lag = configs.lag;
     }
 
     _createClass(EasyMockServer, [{
@@ -39,23 +40,37 @@ var EasyMockServer = function () {
         value: function start() {
             var _this = this;
 
-            _http2.default.createServer(function (req, res) {
+            var server = _http2.default.createServer(function (req, res) {
                 var jsonPath = _path2.default.resolve(_this.basePath, '.' + _url2.default.parse(req.url).pathname + '.json');
                 var tempPath = _path2.default.resolve(_this.basePath, '.' + _url2.default.parse(req.url).pathname + '.template');
-                if (_fs2.default.existsSync(jsonPath)) {
-                    _this.responseFile(jsonPath, req, res, function (data) {
-                        return data;
-                    });
-                } else if (_fs2.default.existsSync(tempPath)) {
-                    _this.responseFile(tempPath, req, res, function (data) {
-                        return JSON.stringify(_mockjs2.default.mock(JSON.parse(data)));
-                    });
-                } else {
-                    console.log('ERROR:  ' + jsonPath + ' OR ' + tempPath + ' NOT FOUND');
-                    _this.sendError(res);
-                }
+                _url2.default.parse(req.url).pathname != '/favicon.ico' && setTimeout(function () {
+                    if (_fs2.default.existsSync(jsonPath)) {
+                        _this.responseFile(jsonPath, req, res, function (data) {
+                            return data;
+                        });
+                    } else if (_fs2.default.existsSync(tempPath)) {
+                        _this.responseFile(tempPath, req, res, function (data) {
+                            return JSON.stringify(_mockjs2.default.mock(JSON.parse(data)));
+                        });
+                    } else {
+                        console.log('ERROR: ' + jsonPath + ' OR ' + tempPath + ' NOT FOUND');
+                        _this.sendError(res);
+                    }
+                }, _this.lag);
             }).listen(this.port);
-            console.log('Server running on port:' + this.port);
+            server.on('error', function (e) {
+                return _this.serverError(e);
+            });
+            console.log('Server is running. [port:' + this.port + '] [basePath:' + this.basePath + '] [Lag:' + this.lag + ']');
+        }
+    }, {
+        key: 'serverError',
+        value: function serverError(e) {
+            if (e.code === 'EADDRINUSE') {
+                console.log('port:' + e.port + ' is already in use');
+                this.port++;
+                this.start();
+            }
         }
     }, {
         key: 'responseFile',
@@ -64,10 +79,10 @@ var EasyMockServer = function () {
 
             _fs2.default.readFile(filePath, 'utf-8', function (err, data) {
                 if (err) {
-                    console.log('ERROR:  ' + 'READ ' + filePath + ' ERROR');
+                    console.log('ERROR: READ ' + filePath + ' ERROR');
                     _this2.sendError(response);
                 } else {
-                    console.log('SUCCESS:  ' + request.url + ' --> ' + filePath);
+                    console.log('SUCCESS: ' + request.url + ' --> ' + filePath);
                     _this2.sendSuccess(fileHandler(data), request, response);
                 }
             });

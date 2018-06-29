@@ -51,3 +51,8 @@ $ easyMockServer --port 8088
 $ easyMockServer -b ./mock
 $ easyMockServer --basePath ./mock
 ```
+### set lag
+```
+$ easyMockServer -l 4000
+$ easyMockServer --lag 4000
+```
