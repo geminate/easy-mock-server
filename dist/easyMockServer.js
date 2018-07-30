@@ -54,7 +54,12 @@ var EasyMockServer = function () {
                         });
                     } else if (_fs2.default.existsSync(tempPath)) {
                         _this.responseFile(tempPath, req, res, function (data) {
-                            return JSON.stringify(_mockjs2.default.mock(JSON.parse(data)));
+                            try {
+                                return JSON.stringify(_mockjs2.default.mock(JSON.parse(data)));
+                            } catch (e) {
+                                console.log('WARN'.bgYellow.black + ('  ' + e + ', return file directly.'));
+                                return data;
+                            }
                         });
                     } else {
                         console.log('ERROR'.bgRed.black + ('  ' + jsonPath + ' OR ' + tempPath + ' NOT FOUND'));

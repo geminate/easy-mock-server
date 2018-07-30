@@ -24,7 +24,12 @@ class EasyMockServer {
                     });
                 } else if (fs.existsSync(tempPath)) {
                     this.responseFile(tempPath, req, res, (data) => {
-                        return JSON.stringify(mock.mock(JSON.parse(data)));
+                        try {
+                            return JSON.stringify(mock.mock(JSON.parse(data)));
+                        } catch (e) {
+                            console.log('WARN'.bgYellow.black + `  ${e}, return file directly.`);
+                            return data;
+                        }
                     });
                 } else {
                     console.log('ERROR'.bgRed.black + `  ${jsonPath} OR ${tempPath} NOT FOUND`);
