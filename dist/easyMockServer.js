@@ -22,6 +22,10 @@ var _mockjs = require('mockjs');
 
 var _mockjs2 = _interopRequireDefault(_mockjs);
 
+var _colors = require('colors');
+
+var _colors2 = _interopRequireDefault(_colors);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53,7 +57,7 @@ var EasyMockServer = function () {
                             return JSON.stringify(_mockjs2.default.mock(JSON.parse(data)));
                         });
                     } else {
-                        console.log('ERROR: ' + jsonPath + ' OR ' + tempPath + ' NOT FOUND');
+                        console.log('ERROR'.bgRed.black + ('  ' + jsonPath + ' OR ' + tempPath + ' NOT FOUND'));
                         _this.sendError(res);
                     }
                 }, _this.lag);
@@ -67,7 +71,7 @@ var EasyMockServer = function () {
         key: 'serverError',
         value: function serverError(e) {
             if (e.code === 'EADDRINUSE') {
-                console.log('port:' + e.port + ' is already in use');
+                console.log('WARN'.bgYellow.black + ('  port: ' + e.port + ' is already in use'));
                 this.port++;
                 this.start();
             }
@@ -79,7 +83,7 @@ var EasyMockServer = function () {
 
             _fs2.default.readFile(filePath, 'utf-8', function (err, data) {
                 if (err) {
-                    console.log('ERROR: READ ' + filePath + ' ERROR');
+                    console.log('ERROR'.bgRed.black + ('  READ ' + filePath + ' ERROR'));
                     _this2.sendError(response);
                 } else {
                     console.log('SUCCESS: ' + request.url + ' --> ' + filePath);

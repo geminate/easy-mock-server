@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import url from 'url';
 import mock from 'mockjs';
+import colors from 'colors';
 
 class EasyMockServer {
 
@@ -22,11 +23,11 @@ class EasyMockServer {
                         return data;
                     });
                 } else if (fs.existsSync(tempPath)) {
-                    this.responseFile(tempPath, req, res, function (data) {
+                    this.responseFile(tempPath, req, res, (data) => {
                         return JSON.stringify(mock.mock(JSON.parse(data)));
                     });
                 } else {
-                    console.log(`ERROR: ${jsonPath} OR ${tempPath} NOT FOUND`);
+                    console.log('ERROR'.bgRed.black + `  ${jsonPath} OR ${tempPath} NOT FOUND`);
                     this.sendError(res);
                 }
             }, this.lag);
@@ -37,7 +38,7 @@ class EasyMockServer {
 
     serverError(e) {
         if (e.code === 'EADDRINUSE') {
-            console.log(`port:${e.port} is already in use`);
+            console.log('WARN'.bgYellow.black + `  port: ${e.port} is already in use`);
             this.port++;
             this.start();
         }
@@ -46,7 +47,7 @@ class EasyMockServer {
     responseFile(filePath, request, response, fileHandler) {
         fs.readFile(filePath, 'utf-8', (err, data) => {
             if (err) {
-                console.log(`ERROR: READ ${filePath} ERROR`);
+                console.log('ERROR'.bgRed.black + `  READ ${filePath} ERROR`);
                 this.sendError(response);
             } else {
                 console.log(`SUCCESS: ${request.url} --> ${filePath}`);
