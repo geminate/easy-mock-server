@@ -3,3 +3,6 @@ node_modules/
 
 # Webstorm
 .idea/
+
+# Babel
+.babelrc
