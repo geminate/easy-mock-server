@@ -1,8 +1,11 @@
 {
   "name": "easy-mock-server",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A mock server for json and mock template files",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "watch": "babel src -d dist -w"
   },

@@ -1,8 +1,0 @@
-# Node modules
-node_modules/
-
-# Webstorm
-.idea/
-
-# Babel
-.babelrc
